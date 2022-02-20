@@ -20,6 +20,8 @@ import os
 import argparse
 import platform
 
+TEXT_BOX_XPATH="//div[@title='Scrivi un messaggio']"
+
 if platform.system() == 'Darwin':
     # MACOS Path
     chrome_default_path = os.getcwd() + '/driver/chromedriver'
@@ -116,7 +118,8 @@ def input_message():
 def whatsapp_login(chrome_path, headless):
     global wait, browser, Link
     chrome_options = Options()
-    chrome_options.add_argument('--user-data-dir=./User_Data')
+    user_data=os.path.join(os.getcwd(),"User_Data")
+    chrome_options.add_argument('--user-data-dir={}'.format(user_data))
     if headless == 'True':
         chrome_options.add_argument('--headless')
     browser = webdriver.Chrome(executable_path=chrome_path, options=chrome_options)
@@ -140,7 +143,7 @@ def send_message(target):
                 print("Retry Send Message Exception", e)
                 ct += 1
                 time.sleep(3)
-        input_box = browser.find_element_by_xpath('//*[@id="main"]/footer/div[1]/div[2]/div/div[2]')
+        input_box = browser.find_element_by_xpath(TEXT_BOX_XPATH) 
         for ch in message:
             if ch == "\n":
                 ActionChains(browser).key_down(Keys.SHIFT).key_down(Keys.ENTER).key_up(Keys.ENTER).key_up(
@@ -160,7 +163,7 @@ def send_unsaved_contact_message():
     try:
         time.sleep(10)
         browser.implicitly_wait(10)
-        input_box = browser.find_element_by_xpath('//*[@id="main"]/footer/div[1]/div[2]/div/div[2]')
+        input_box = browser.find_element_by_xpath(TEXT_BOX_XPATH)
         for ch in message:
             if ch == "\n":
                 ActionChains(browser).key_down(Keys.SHIFT).key_down(Keys.ENTER).key_up(Keys.ENTER).key_up(
