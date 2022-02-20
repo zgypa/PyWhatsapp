@@ -20,7 +20,10 @@ import os
 import argparse
 import platform
 
+# XPath to select message text box.
 TEXT_BOX_XPATH="//div[@title='Scrivi un messaggio']"
+
+CONTACTS_FILE="contacts.txt"
 
 if platform.system() == 'Darwin':
     # MACOS Path
@@ -36,7 +39,7 @@ parser.add_argument('--message', action='store', type=str, default='', help='Ent
 parser.add_argument('--remove_cache', action='store', type=str, default='False',
                     help='Remove Cache | Scan QR again or Not')
 parser.add_argument('--import_contact', action='store', type=str, default='False',
-                    help='Import contacts.txt or not (True/False)')
+                    help='Import {} or not (True/False)'.format(CONTACTS_FILE))
 parser.add_argument('--enable_headless', action='store', type=str, default='False',
                     help='Enable Headless Driver (True/False)')
 args = parser.parse_args()
@@ -264,7 +267,7 @@ def import_contacts():
     global Contact, unsaved_Contacts
     Contact = []
     unsaved_Contacts = []
-    fp = open("contacts.txt", "r")
+    fp = open(CONTACTS_FILE, "r")
     while True:
         line = fp.readline()
         con = ' '.join(line.split())
@@ -336,7 +339,7 @@ def scheduler():
 if __name__ == "__main__":
     print("Web Page Open")
 
-    if os.path.exists("contacts.txt") and args.import_contact == 'True':
+    if os.path.exists(CONTACTS_FILE) and args.import_contact == 'True':
         # read contacts from text file
         import_contacts()
     if not Contact and not unsaved_Contacts:
