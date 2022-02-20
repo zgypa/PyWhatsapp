@@ -249,7 +249,7 @@ def send_files():
             # Check for traceback errors with XML imports
             traceback.print_exc()
     time.sleep(1)
-    docPath = os.getcwd() + "\\Documents\\" + doc_filename
+    docPath = os.path.join(os.getcwd(),"Documents",doc_filename)
     try:
         autoit.control_focus("Open", "Edit1")
     except :
