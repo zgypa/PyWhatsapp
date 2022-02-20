@@ -24,7 +24,13 @@ import shutil
 # XPath to select message text box.
 TEXT_BOX_XPATH="//div[@title='Scrivi un messaggio']"
 
-CONTACTS_FILE="contacts.txt"
+CLIP_BUTTON_XPATH='//*[@id="main"]/footer/div[1]/div[1]/div[2]/div/div/span'
+DOC_BUTTON_XPATH='//*[@id="main"]/footer/div[1]/div[1]/div[2]/div/span/div/div/ul/li[3]/button'
+IMG_BUTTON_XPATH='//*[@id="main"]/footer/div[1]/div[1]/div[2]/div/span/div/div/ul/li[1]/button'
+MEDIA_BUTTON_XPATH='//*[@id="main"]/footer/div[1]/div[1]/div[2]/div/span/div/div/ul/li[1]/button'
+SEND_BUTTON_XPATH='//*[@id="app"]/div/div/div[2]/div[2]/span/div/span/div/div/div[2]/span/div/div'
+
+CONTACTS_FILE="_contacts.txt"
 
 if platform.system() == 'Darwin':
     # MACOS Path
@@ -184,7 +190,7 @@ def send_unsaved_contact_message():
 def send_attachment():
     # Attachment Drop Down Menu
     try:
-        clipButton = browser.find_element_by_xpath('//*[@id="main"]/footer/div[1]/div[1]/div[2]/div/div/span')
+        clipButton = browser.find_element_by_xpath(CLIP_BUTTON_XPATH)
         clipButton.click()
     except:
         traceback.print_exc()
@@ -192,7 +198,7 @@ def send_attachment():
 
     # To send Videos and Images.
     try:
-        mediaButton = browser.find_element_by_xpath('//*[@id="main"]/footer/div[1]/div[1]/div[2]/div/span/div/div/ul/li[1]/button')
+        mediaButton = browser.find_element_by_xpath(MEDIA_BUTTON_XPATH)
         mediaButton.click()
     except:
         traceback.print_exc()
@@ -200,12 +206,12 @@ def send_attachment():
     hour = datetime.datetime.now().hour
     # After 5am and before 11am scheduled this.
     if (hour >= 5 and hour <= 11):
-        image_path = os.getcwd() + "\\Media\\" + 'goodmorning.jpg'
+        image_path = os.path.join(os.getcwd(),"Media","goodmorning.jpg")
     # After 9pm and before 11pm schedule this
     elif (hour >= 21 and hour <= 23):
-        image_path = os.getcwd() + "\\Media\\" + 'goodnight.jpg'
+        image_path = os.path.join(os.getcwd(),"Media","goodnight.jpg")
     else:  # At any other time schedule this.
-        image_path = os.getcwd() + "\\Media\\" + 'howareyou.jpg'
+        image_path = os.path.join(os.getcwd(),"Media","howareyou.jpg")
     # print(image_path)
 
     autoit.control_focus("Open", "Edit1")
@@ -215,7 +221,7 @@ def send_attachment():
     time.sleep(3)
     # Send button
     try:
-        whatsapp_send_button = browser.find_element_by_xpath('//*[@id="app"]/div/div/div[2]/div[2]/span/div/span/div/div/div[2]/span/div/div')
+        whatsapp_send_button = browser.find_element_by_xpath(SEND_BUTTON_XPATH)
         whatsapp_send_button.click()
     except:
         traceback.print_exc()
@@ -226,7 +232,7 @@ def send_attachment():
 def send_files():
     global doc_filename
     # Attachment Drop Down Menu
-    clipButton = browser.find_element_by_xpath('//*[@id="main"]/footer/div[1]/div[1]/div[2]/div/div/span')
+    clipButton = browser.find_element_by_xpath(CLIP_BUTTON_XPATH)
     clipButton.click()
     
     time.sleep(1)
@@ -235,7 +241,7 @@ def send_files():
     # properly in whatsapp web.
     if doc_filename.split('.')[1]=='pdf'or doc_filename.split('.')[1]=='docx'or doc_filename.split('.')[1]=='pptx' :
         try:
-            docButton = browser.find_element_by_xpath('//*[@id="main"]/footer/div[1]/div[1]/div[2]/div/span/div/div/ul/li[3]/button')
+            docButton = browser.find_element_by_xpath(DOC_BUTTON_XPATH)
             
             docButton.click()
         except:
@@ -244,7 +250,7 @@ def send_files():
     else:
         try: 
             # IMG attatchment button
-            docButton = browser.find_element_by_xpath('//*[@id="main"]/footer/div[1]/div[1]/div[2]/div/span/div/div/ul/li[1]/button')
+            docButton = browser.find_element_by_xpath(IMG_BUTTON_XPATH)
             docButton.click()
         except:
             # Check for traceback errors with XML imports
@@ -259,7 +265,7 @@ def send_files():
     autoit.control_click("Open", "Button1")
     time.sleep(3)
     # Changed whatsapp send button xml link.
-    whatsapp_send_button = browser.find_element_by_xpath('//*[@id="app"]/div/div/div[2]/div[2]/span/div/span/div/div/div[2]/span/div/div')
+    whatsapp_send_button = browser.find_element_by_xpath(SEND_BUTTON_XPATH)
 
     whatsapp_send_button.click()
     print('File sent')
