@@ -34,18 +34,18 @@ CONTACTS_FILE="_contacts.txt"
 
 if platform.system() == 'Darwin':
     # MACOS Path
-    chrome_default_path = os.getcwd() + '/driver/chromedriver'
+    chrome_default_path = os.path.join(os.getcwd(), 'driver', 'chromedriver')
 else:
     # Windows Path
-    chrome_default_path = os.getcwd() + '/driver/chromedriver.exe'
+    chrome_default_path = os.path.join(os.getcwd(), 'driver', 'chromedriver.exe')
 
 parser = argparse.ArgumentParser(description='PyWhatsapp Guide')
 parser.add_argument('--chrome_driver_path', action='store', type=str, default=chrome_default_path,
                     help='chromedriver executable path (MAC and Windows path would be different)')
-parser.add_argument('--message', action='store', type=str, default='', help='Enter the msg you want to send')
+parser.add_argument('-m','--message', action='store', type=str, default='', help='Enter the msg you want to send')
 parser.add_argument('--remove_cache', action='store', type=str, default='False',
                     help='Remove Cache | Scan QR again or Not')
-parser.add_argument('--import_contact', action='store', type=str, default='False',
+parser.add_argument('-i', '--import_contact', action='store', type=str, default='False',
                     help='Import {} or not (True/False)'.format(CONTACTS_FILE))
 parser.add_argument('--enable_headless', action='store', type=str, default='False',
                     help='Enable Headless Driver (True/False)')
@@ -212,7 +212,7 @@ def send_attachment():
         image_path = os.path.join(os.getcwd(),"Media","goodnight.jpg")
     else:  # At any other time schedule this.
         image_path = os.path.join(os.getcwd(),"Media","howareyou.jpg")
-    # print(image_path)
+    print(image_path)
 
     autoit.control_focus("Open", "Edit1")
     autoit.control_set_text("Open", "Edit1", image_path)
@@ -388,5 +388,5 @@ if __name__ == "__main__":
     # Default schedule to send attachment and greet the personal
     # For GoodMorning, GoodNight and howareyou wishes
     # Comment in case you don't want to send wishes or schedule
-    scheduler()
-    # browser.quit()
+    # scheduler()
+    browser.quit()
