@@ -19,6 +19,7 @@ import datetime
 import os
 import argparse
 import platform
+import shutil
 
 # XPath to select message text box.
 TEXT_BOX_XPATH="//div[@title='Scrivi un messaggio']"
@@ -45,7 +46,7 @@ parser.add_argument('--enable_headless', action='store', type=str, default='Fals
 args = parser.parse_args()
 
 if args.remove_cache == 'True':
-    os.system('rm -rf User_Data/*')
+    shutil.rmtree(os.path.join(os.path.getcwd(),'User_Data'))
 browser = None
 Contact = None
 message = None if args.message == '' else args.message
